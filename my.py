@@ -247,6 +247,8 @@ def rules():
                 menu()
     pygame.quit()
 
+
+
 def main():
     player_ship = Player(400,600)
     running = True
@@ -257,6 +259,8 @@ def main():
     timer = 0
     number_of_enemies = 10
     clock = pygame.time.Clock()
+   
+        
 
     def make_screen():
         SCREEN.blit(BACKGROUND,(0,0))
@@ -272,6 +276,12 @@ def main():
             enemy.make_ship(SCREEN)
 
         player_ship.make_ship(SCREEN)
+
+        if lost:
+            lost_label = main_font.render("End of the game! You will be returned to menu.", 1, (255,255,255))
+            score_label = main_font.render(f"Your score:{player_ship.score}! ", 1, (255,255,255)) 
+            SCREEN.blit(lost_label, (SCREEN_WIDTH/2 - lost_label.get_width()/2, 400))
+            SCREEN.blit(score_label, (SCREEN_WIDTH/2 - score_label.get_width()/2, 450))
         pygame.display.update()
 
     while running:
@@ -282,11 +292,7 @@ def main():
             timer += 1
 
         if lost:
-            lost_label = main_font.render("End of the game! You will be returned to menu.", 1, (255,255,255))
-            score_label = main_font.render(f"Your score:{player_ship.score}! ", 1, (255,255,255)) 
-            SCREEN.blit(lost_label, (SCREEN_WIDTH/2 - lost_label.get_width()/2, 400))
-            SCREEN.blit(score_label, (SCREEN_WIDTH/2 - score_label.get_width()/2, 450))
-            if timer > 100:
+            if timer > 200:
                menu()
             else:
                 continue
