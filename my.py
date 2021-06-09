@@ -22,8 +22,9 @@ PLAYER_BULLET = pygame.transform.scale(pygame.image.load(os.path.join("DATA","pl
 HEART = pygame.transform.scale(pygame.image.load(os.path.join("DATA","serce.png")), (25,25))
 
 #Load Sounds
-
-
+sound_explosion = pygame.mixer.Sound(os.path.join("DATA","laser1.wav"))
+sound_dead = pygame.mixer.Sound(os.path.join("DATA","laser2.wav"))
+sound_enemy = pygame.mixer.Sound(os.path.join("DATA","laser6.wav"))
 
 #Load Background
 BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("DATA", "back.png")), (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -88,6 +89,7 @@ class Ship():
 
     def shoot(self):
         if self.cool_down_counter == 0:
+            sound_enemy.play()
             laser1 = Laser(self.x-5, self.y, self.laser_image)
             laser2 = Laser(self.x + 45, self.y, self.laser_image)
             self.lasers.append(laser1)
@@ -319,6 +321,7 @@ def main():
         if keys[pygame.K_s] and player_ship.y + 60 < SCREEN_HEIGHT:
             player_ship.y += 5
         if keys[pygame.K_SPACE]:
+            sound_explosion.play()
             player_ship.shoot()
         
         for enemy in enemies[:]:
@@ -344,9 +347,11 @@ def main():
                 enemy.move(4)
             if collision(enemy, player_ship):
                 player_ship.lives -= 1
+                sound_dead.play()
                 enemies.remove(enemy)
             if enemy.y > SCREEN_HEIGHT:
                 player_ship.lives -= 1
+                sound_dead.play()
                 enemies.remove(enemy)
                    
         make_screen()    
